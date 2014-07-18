@@ -1,0 +1,28 @@
+{
+  "name": "NodeJsMsBuild",
+  "version": "1.0.0",
+  "description": "MsBuild tasks for NodeJs tools",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/XVincentX/NodeJsMsBuild.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "MsBuild",
+    "VisualStudio"
+  ],
+  "author": "V.Chianese",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/XVincentX/NodeJsMsBuild/issues"
+  },
+  "homepage": "https://github.com/XVincentX/NodeJsMsBuild",
+  "devDependencies": {
+    "gulp": "^3.8.6",
+    "gulp-nuget": "0.0.3"
+  }
+}
