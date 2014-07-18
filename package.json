@@ -24,6 +24,7 @@
   "devDependencies": {
     "gulp": "^3.8.6",
     "gulp-chug": "^0.3.0",
-    "gulp-nuget": "0.0.3"
+    "gulp-nuget": "0.0.3",
+    "request": "^2.37.0"
   }
 }

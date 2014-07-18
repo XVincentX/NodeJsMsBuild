@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>NodeJSMsBuild</id>
+        <version>1.0.0</version>
+        <title>NodeJSMsBuild</title>
+        <authors>Vincenzo Chianese</authors>
+        <owners>Vincenzo Chianese</owners>
+        <projectUrl>https://github.com/XVincentX/NodeJsMsBuild</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>My package description.</description>
+        <copyright>Vincenzo Chianese</copyright>
+        <language>en-US</language>
+    </metadata>
+    <files>
+        <file src="build\NodeJSMsBuild.wpp.targets" target="build\NodeJSMsBuild.wpp.targets" />
+        <file src="tools\install.ps1" target="tools\install.ps1" />
+        <file src="build\Gruntfile.js" target="Gruntfile.js" />
+        <file src="build\gulpfile.js" target="gulpfile.js" />
+    </files>
+</package>
