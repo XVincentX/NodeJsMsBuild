@@ -8,7 +8,7 @@
     <HasTsd>$(Get-Command "tsd" -errorAction SilentlyContinue || Get-Command ".bin/tsd" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/tsd" -errorAction SilentlyContinue)</HasTsd>
   </PropertyGroup>
 
-  <Target Name="CleanNodeJsFiles">
+  <Target Name="CleanNodeJsFiles" BeforeTargets="Clean">
       <ItemGroup>
         <TypeScriptGenerated Include="%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js" Condition="!$([System.String]::new('%(TypeScriptCompile.Filename)').EndsWith('.d'))" />
         <TypeScriptGenerated Include="%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js.map" Condition="!$([System.String]::new('%(TypeScriptCompile.Filename)').EndsWith('.d'))" />
@@ -18,7 +18,7 @@
     <Exec Command="DelFolder .\node_modules" />
   </Target>
 
-  <Target Name="RestoreNodeJsPackages">
+  <Target Name="RestoreNodeJsPackages" BeforeTargets="BeforeBuild">
     <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition="!HasNpm"/>
     <Exec Command="npm install" Condition="HasNpm" />
     <Message Text="Npm packages restored." Condition="HasNpm"/>
@@ -28,7 +28,7 @@
     <Message Text="Bower packages restored." Condition="HasBower"/>
   </Target>
 
-  <Target Name="RunJsBuildTasks">
+  <Target Name="RunJsBuildTasks" BeforeTargets="AfterBuild">
     <Exec Command="node_modules\.bin\gulp $(Configuration)" Condition="HasGulp" />
     <Message Text="Gulp tasks for ($Configuration) ran." Condition="HasGulp"/>
     <Exec Command="node_modules\.bin\grunt $(Configuration)" Condition="HasGrunt"/>

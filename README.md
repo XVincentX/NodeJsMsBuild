@@ -38,6 +38,14 @@ If you have got both of task runners (will you?), both files will be leaved in
 your project.
 
 * 3 named targets will be imported into your projects. These are:
+  * **CleanNodeJsFiles**: this task will delete all _Javascript_ filed created by
+  Typescript compilation process (the .js and .js.map). Then it will delete the
+  entire _node_modules/_ directory and _typings_ folder as well.
+  * **RestoreNodeJsPackages**: This target will run the following commands:
+    * npm install
+    * tsd reinstall
+    * bower install
+  * **RunJsBuildTasks**
 
 ## How do you detect presence of NodeJS modules?
 I think the code will be more clear of the words in this case:
