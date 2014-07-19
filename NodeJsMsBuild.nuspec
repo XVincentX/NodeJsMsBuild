@@ -7,16 +7,17 @@
         <authors>Vincenzo Chianese</authors>
         <owners>Vincenzo Chianese</owners>
         <projectUrl>https://github.com/XVincentX/NodeJsMsBuild</projectUrl>
+        <iconUrl>https://cdn.rawgit.com/XVincentX/NodeJsMsBuild/master/NodeJsMsBuild.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>My package description.</description>
+        <description>MsBuild tasks for NodeJs tools integration.</description>
         <copyright>Vincenzo Chianese</copyright>
         <language>en-US</language>
     </metadata>
     <files>
         <file src="build\NodeJSMsBuild.wpp.targets" target="build\NodeJSMsBuild.wpp.targets" />
         <file src="tools\install.ps1" target="tools\install.ps1" />
-        <file src="build\Gruntfile.js" target="Gruntfile.js" />
-        <file src="build\gulpfile.js" target="gulpfile.js" />
+        <file src="content\Gruntfile.js" target="" />
+        <file src="content\gulpfile.js" target="" />
         <file src="readme.txt" target="" />
     </files>
 </package>

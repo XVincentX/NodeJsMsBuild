@@ -1,1 +1,4 @@
 node_modules/
+nuget.exe
+NodeJsMsbuild.nupkg/
+*.nupkg

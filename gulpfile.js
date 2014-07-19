@@ -3,7 +3,8 @@ var chug = require("gulp-chug");
 var nuget = require("gulp-nuget");
 var request = require("request");
 var fs = require("fs");
-var rimraf = require("gulp-rimraf")
+var rimraf = require("gulp-rimraf");
+var rename = require("gulp-rename");
 
 gulp.task('nuget-download', function(done) {
     if(fs.existsSync('nuget.exe')) {
@@ -20,7 +21,8 @@ gulp.task("default",["nuget-download"],function task()
 {
 
   gulp.src("README.md")
-  .pipe(gulp.dest("readme.txt"));
+  .pipe(rename("readme.txt"))
+  .pipe(gulp.dest("./"));
 
   gulp.src(["build/**","tools/**"])
   .pipe(nuget.pack(
@@ -35,5 +37,5 @@ gulp.task("default",["nuget-download"],function task()
 
 gulp.task("clean",function clean(cb)
 {
-  gulp.src(["*.exe","*.txt","node_modules/**","NodeJsMsBuild.nupkg/**"],{read:false}).pipe(rimraf());
+  gulp.src(["*.exe","*.txt","node_modules/**","NodeJsMsBuild.nupkg/**","publish"],{read:false}).pipe(rimraf());
 })
