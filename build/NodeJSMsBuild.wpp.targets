@@ -1,0 +1,37 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+
+  <PropertyGroup>
+    <HasNpm>$(Get-Command "npm" -errorAction SilentlyContinue || Get-Command ".bin/npm" -errorAction SilentlyContinue)</HasNpm>
+    <HasGulp>$(Get-Command "gulp" -errorAction SilentlyContinue || Get-Command ".bin/gulp" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/gulp" -errorAction SilentlyContinue)</HasGulp>
+    <HasGrunt>$(Get-Command "grunt" -errorAction SilentlyContinue || Get-Command ".bin/grunt" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/grunt" -errorAction SilentlyContinue)</HasGrunt>
+    <HasBower>$(Get-Command "bower" -errorAction SilentlyContinue || Get-Command ".bin/bower" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/bower" -errorAction SilentlyContinue)</HasBower>
+    <HasTsd>$(Get-Command "tsd" -errorAction SilentlyContinue || Get-Command ".bin/tsd" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/tsd" -errorAction SilentlyContinue)</HasTsd>
+  </PropertyGroup>
+
+  <Target Name="CleanNodeJsFiles">
+      <ItemGroup>
+        <TypeScriptGenerated Include="%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js" Condition="!$([System.String]::new('%(TypeScriptCompile.Filename)').EndsWith('.d'))" />
+        <TypeScriptGenerated Include="%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js.map" Condition="!$([System.String]::new('%(TypeScriptCompile.Filename)').EndsWith('.d'))" />
+    </ItemGroup>
+    <Delete Files="@(TypeScriptGenerated)" />
+    <RemoveDir Directories=".\bower_components\;.\typings\"/>
+    <Exec Command="DelFolder .\node_modules" />
+  </Target>
+
+  <Target Name="RestoreNodeJsPackages">
+    <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition="!HasNpm"/>
+    <Exec Command="npm install" Condition="HasNpm" />
+    <Message Text="Npm packages restored." Condition="HasNpm"/>
+    <Exec Command="node_modules\.bin\tsd reinstall" Condition="HasTsd" />
+    <Message Text="Tsd packages restored." Condition="HasTsd"/>
+    <Exec Command="node_modules\.bin\bower install --config.interactive=false" Condition="HasBower" />
+    <Message Text="Bower packages restored." Condition="HasBower"/>
+  </Target>
+
+  <Target Name="RunJsBuildTasks">
+    <Exec Command="node_modules\.bin\gulp $(Configuration)" Condition="HasGulp" />
+    <Message Text="Gulp tasks for ($Configuration) ran." Condition="HasGulp"/>
+    <Exec Command="node_modules\.bin\grunt $(Configuration)" Condition="HasGrunt"/>
+    <Message Text="Grunt tasks for ($Configuration) ran." Condition="HasGrunt"/>
+  </Target>
+</Project>
