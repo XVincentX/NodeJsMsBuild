@@ -1,10 +1,21 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
   grunt.initConfig({});
 
+  grunt.registerTask("shared", function(){
 
-  // Default task(s).
-  grunt.registerTask('default', []);
+  });
+
+ grunt.registerTask("Release", ["shared"], function(){
+
+ });
+
+  grunt.registerTask("Debug", ["shared"], function(){
+
+  });
+
+  grunt.registerTask('default', ["shared"], function(){
+
+  });
 
 };

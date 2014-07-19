@@ -3,6 +3,7 @@ var chug = require("gulp-chug");
 var nuget = require("gulp-nuget");
 var request = require('request');
 var fs = require('fs');
+var rimraf = require("gulp-rimraf")
 
 gulp.task('nuget-download', function(done) {
     if(fs.existsSync('nuget.exe')) {
@@ -26,3 +27,10 @@ gulp.task("default",["nuget-download"],function task()
     }))
   .pipe(gulp.dest("NodeJsMsBuild.nupkg"));
 });
+
+
+gulp.task("clean",function clean()
+{
+  rimraf("nuget.exe");
+  gulp.src('node_modules/**').pipe(rimraf());
+})
