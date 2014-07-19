@@ -14,10 +14,11 @@
         <language>en-US</language>
     </metadata>
     <files>
-        <file src="build\NodeJSMsBuild.wpp.targets" target="build\NodeJSMsBuild.wpp.targets" />
-        <file src="tools\install.ps1" target="tools\install.ps1" />
-        <file src="content\Gruntfile.js" target="" />
-        <file src="content\gulpfile.js" target="" />
-        <file src="readme.txt" target="" />
+        <file src="nugetPackage\build\NodeJSMsBuild.targets" target="build\NodeJSMsBuild.targets" />
+        <file src="nugetPackage\tools\DelFolder.bat" target="tools\DelFolder.bat" />
+        <file src="nugetPackage\tools\Install.ps1" target="tools\Install.ps1" />
+        <file src="nugetPackage\content\Gruntfile.js" target="content\Gruntfile.js" />
+        <file src="nugetPackage\content\gulpfile.js" target="content\gulpfile.js" />
+        <file src="nugetPackage\readme.txt" target="" />
     </files>
 </package>

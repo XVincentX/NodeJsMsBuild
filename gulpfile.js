@@ -1,5 +1,4 @@
 var gulp = require("gulp");
-var chug = require("gulp-chug");
 var nuget = require("gulp-nuget");
 var request = require("request");
 var fs = require("fs");
@@ -22,7 +21,7 @@ gulp.task("default",["nuget-download"],function task()
 
   gulp.src("README.md")
   .pipe(rename("readme.txt"))
-  .pipe(gulp.dest("./"));
+  .pipe(gulp.dest("./nugetPackage/"));
 
   gulp.src(["build/**","tools/**"])
   .pipe(nuget.pack(
