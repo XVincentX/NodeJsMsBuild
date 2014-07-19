@@ -4,8 +4,10 @@ NodeJsMsBuild
 ![Alt text](https://cdn.rawgit.com/XVincentX/NodeJsMsBuild/master/NodeJsMsBuild.png)
 **MsBuild tasks for NodeJS tools**
 
-This project is a collection of utilities that will inject some tools into your
+This project is a collection of utilities that will inject some targets/files into your
 Visual Studio project and integrating NodeJs tools.
+This project is born after [this article](http://www.dotnet-programming.com/post/2014/07/11/Integrate-NodeJS-tools-in-Visual-StudioTFS.aspx).
+
 If you're looking for binaries, point your browser to the
 [nuget package](http://nuget.org/packages...)
 
@@ -45,7 +47,11 @@ your project.
     * npm install
     * tsd reinstall
     * bower install
-  * **RunJsBuildTasks**
+  * **RunJsBuildTasks**: This target will run grunt/gulp  tasks based on your
+  configuration (Debug/Release).
+
+The process will not fail if the executables will not be found, but a warning
+message will be emitted.
 
 ## How do you detect presence of NodeJS modules?
 I think the code will be more clear of the words in this case:
@@ -69,7 +75,7 @@ You can make this using nuget package manager too.
 [Bower](http://www.nuget.org/packages/Bower/),
 [Gulp](http://www.nuget.org/packages/Gulp.js/) and
 [Grunt](http://www.nuget.org/packages/Grunt.js/)
-  are avaiable as nuget packages.
+are avaiable as nuget packages.
 
   There is no support for _tsd_ at the moment, but I think [he]() will add it soon
   if you ask him.

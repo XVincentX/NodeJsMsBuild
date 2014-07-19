@@ -19,19 +19,19 @@
   </Target>
 
   <Target Name="RestoreNodeJsPackages" BeforeTargets="BeforeBuild">
-    <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition="!HasNpm"/>
-    <Exec Command="npm install" Condition="HasNpm" />
-    <Message Text="Npm packages restored." Condition="HasNpm"/>
-    <Exec Command="node_modules\.bin\tsd reinstall" Condition="HasTsd" />
-    <Message Text="Tsd packages restored." Condition="HasTsd"/>
-    <Exec Command="node_modules\.bin\bower install --config.interactive=false" Condition="HasBower" />
-    <Message Text="Bower packages restored." Condition="HasBower"/>
+    <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition="!'$(HasNpm)'"/>
+    <Exec Command="npm install" Condition="'$(HasNpm)'" />
+    <Message Text="Npm packages restored." Condition="'$(HasTsd)'"/>
+    <Exec Command="node_modules\.bin\tsd reinstall" Condition="'$(HasTsd)'" />
+    <Message Text="Tsd packages restored." Condition="'$(HasNpm)'"/>
+    <Exec Command="node_modules\.bin\bower install --config.interactive=false" Condition="'$(HasBower)'" />
+    <Message Text="Bower packages restored." Condition="'$(HasBower)'"/>
   </Target>
 
   <Target Name="RunJsBuildTasks" BeforeTargets="AfterBuild">
-    <Exec Command="node_modules\.bin\gulp $(Configuration)" Condition="HasGulp" />
-    <Message Text="Gulp tasks for ($Configuration) ran." Condition="HasGulp"/>
-    <Exec Command="node_modules\.bin\grunt $(Configuration)" Condition="HasGrunt"/>
-    <Message Text="Grunt tasks for ($Configuration) ran." Condition="HasGrunt"/>
+    <Exec Command="node_modules\.bin\gulp $(Configuration)" Condition="'$(HasGulp)'" />
+    <Message Text="Gulp tasks for ($Configuration) ran." Condition="'$(HasGulp)'"/>
+    <Exec Command="node_modules\.bin\grunt $(Configuration)" Condition="'$(HasGrunt)'"/>
+    <Message Text="Grunt tasks for ($Configuration) ran." Condition="'$(HasGrunt)'"/>
   </Target>
 </Project>
