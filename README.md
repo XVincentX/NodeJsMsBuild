@@ -51,9 +51,9 @@ I think the code will be more clear of the words in this case:
 </PropertyGroup>
 ```
 To go into details, it will:
-1. Check for commands into your __PATH__. This will be fine if you install NodeJS,
+* Check for commands into your __PATH__. This will be fine if you install NodeJS,
 NPM and other modules as global ones.
-2. Check for commands into _./bin_ path of your project. This is the case when
+* Check for commands into _./bin_ path of your project. This is the case when
 you do not want to install packages into your system, but as standalone executables.
 You can make this using nuget package manager too.
 [NodeJs](http://www.nuget.org/packages/Node.js/),
@@ -65,7 +65,7 @@ You can make this using nuget package manager too.
 
   There is no support for _tsd_ at the moment, but I think [he]() will add it soon
   if you ask him.
-3. Check for binaries into _node_modules_ directory. This is the case if you have
+* Check for binaries into _node_modules_ directory. This is the case if you have
 got Node and NPM installed in your **PATH**, but all the other tools are installed
 as _local_ packages.
 
