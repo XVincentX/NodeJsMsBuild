@@ -67,6 +67,8 @@ I think the code will be more clear of the words in this case:
   <HasBower>$(Get-Command "bower" -errorAction SilentlyContinue || Get-Command ".bin/bower" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/bower" -errorAction SilentlyContinue)</HasBower>
   <HasTsd>$(Get-Command "tsd" -errorAction SilentlyContinue || Get-Command ".bin/tsd" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/tsd" -errorAction SilentlyContinue)</HasTsd>
 </PropertyGroup>
+
+<!--Draft, it does not work yet-->
 ```
 To go into details, it will:
 * Check for commands into your __PATH__. This will be fine if you install NodeJS,

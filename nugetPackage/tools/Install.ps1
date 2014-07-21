@@ -10,9 +10,6 @@ Function Test-CommandExists
  Finally {$ErrorActionPreference=$oldPreference}
 }
 
-
-//The script starts here.
-
 if (Test-CommandExists "grunt" -eq $false -or Test-CommandExists "./.bin/grunt" -eq $false -or Test-CommandExists "./node_modules/.bin/grunt" -eq $false)
 {
   Write-Host "Unable to find grunt; Gruntfile.js removed from project. You can find it anyway showing all items"
