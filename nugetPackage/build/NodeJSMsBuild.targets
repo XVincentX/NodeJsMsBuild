@@ -1,37 +1,122 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
 
 <PropertyGroup>
-  <Npm>npm</Npm>
-  <Bower>.\node_modules\.bin\bower</Bower>
-  <Tsd>.\node_modules\.bin\tsd</Tsd>
-  <Gulp>.\node_modules\.bin\gulp</Gulp>
-  <Grunt>.\node_modules\.bin\grunt</Grunt>
+  <!-- 
+  Properties like this should be conditioned so that they can be overridden inside
+  of a .csproj or .props file
+  -->
+  <Npm Condition=" '$(npm)'=='' ">npm</Npm>
+  
+  <!-- 
+  What's the intention of .\ here? I don't think this should be .\ but I just
+  took from the previous version.
+
+  Note: personal preference these days I use lowercase first element name.
+  -->
+  <node_modules Condition=" '$(node_modules)'=='' ">.\</node_modules>
+  <Bower Condition=" '$(Bower)'=='' ">$(node_modules).bin\bower</Bower>
+  <Tsd Condition=" '$(Tsd)'=='' ">$(node_modules).bin\tsd</Tsd>
+  <Gulp Condition=" '$(Gulp)'=='' ">$(node_modules).bin\gulp</Gulp>
+  <Grunt Condition=" '$(Grunt)'=='' ">$(node_modules).bin\grunt</Grunt>
 </PropertyGroup>
 
-  <Target Name="CleanNodeJsFiles" BeforeTargets="BeforeClean">
+  <PropertyGroup>
+    <!-- 
+    Add your target to the end of the list of targets to execute when Clean is invoked.
+    -->
+    <CleanDependsOn>
+      $(CleanDependsOn);
+      CleanNodeJsFiles
+    </CleanDependsOn>
+
+    <!--
+    Create a DependsOn property that others can populate if they want to hook into
+    this clean process
+    -->
+    <CleanNodeJsFilesDependsOn>
+      $(CleanNodeJsFilesDependsOn);
+    </CleanNodeJsFilesDependsOn>
+  </PropertyGroup>
+  <Target Name="CleanNodeJsFiles" DependsOnTargets="$(CleanNodeJsFilesDependsOn)">
       <ItemGroup>
-        <TypeScriptGenerated Include="%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js" Condition="!$([System.String]::new('%(TypeScriptCompile.Filename)').EndsWith('.d'))" />
-        <TypeScriptGenerated Include="%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js.map" Condition="!$([System.String]::new('%(TypeScriptCompile.Filename)').EndsWith('.d'))" />
+        <!--
+        For this type of behavior I don't believe you should be populating any known items,
+        instead create a new one and delete from there.
+        
+        - Prefix with _ to let others know they shouldn't rely on this item list
+        - Remove existing values using Remove=@(_filesToDelete) just to be overly cautious
+        - Added Exists check to avoid any errors with the Delete task
+        -->
+        <_filesToDelete Remove="@(_filesToDelete)"/>
+        <_filesToDelete Include="%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js" 
+                        Condition="!$([System.String]::new('%(TypeScriptCompile.Filename)').EndsWith('.d')) and Exists('%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js')" />
+        <_filesToDelete Include="%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js.map" 
+                             Condition="!$([System.String]::new('%(TypeScriptCompile.Filename)').EndsWith('.d')) and Exists('%(TypeScriptCompile.RelativeDir)%(TypeScriptCompile.Filename).js.map')" />
     </ItemGroup>
-    <Delete Files="@(TypeScriptGenerated)" />
+    
+    <Delete Files="@(_filesToDelete)" />    
+    <!-- You should likely create a property/item for this instead of hard coding. -->
     <RemoveDir Directories=".\bower_components\;.\typings\"/>
-    <Exec Command="DelFolder .\node_modules" />
+    <!-- 
+    You should likely create a property for DelFolder as well. 
+    Does DelFolder have a dependency on RoboCopy? If so that may not work. Best option would be
+    to convert that to standard MSBuild.
+    -->
+    <Exec Command="DelFolder $(node_modules)" />
   </Target>
 
-  <Target Name="RestoreNodeJsPackages" BeforeTargets="BeforeBuild">
-    <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition="$(Npm) == ''"/>
-    <Exec Command="$(Npm) install" Condition="$(Npm) != ''" />
-    <Message Text="Npm packages restored." Condition="$(Tsd) != ''"/>
-    <Exec Command="$(Tsd) reinstall" Condition="$(Tsd) != ''" />
-    <Message Text="Tsd packages restored." Condition="'$(Npm) != '''"/>
-    <Exec Command="$(Bower) install --config.interactive=false" Condition="$(Bower) != ''" />
-    <Message Text="Bower packages restored." Condition="'$(Bower) != '''"/>
+  <PropertyGroup>
+    <!-- Add RestoreNodeJsPackages & RunJsBuildTasks to list of targets to execute on Build -->
+    <BuildDependsOn>
+      RestoreNodeJsPackages;
+      $(BuildDependsOn);
+      RunJsBuildTasks;
+    </BuildDependsOn>
+
+    <RestoreNodeJsPackagesDependsOn>
+      $(RestoreNodeJsPackagesDependsOn);
+    </RestoreNodeJsPackagesDependsOn>
+
+    <RunJsBuildTasksDependsOn>
+      $(RunJsBuildTasksDependsOn);
+    </RunJsBuildTasksDependsOn>
+  </PropertyGroup>
+  
+  <Target Name="RestoreNodeJsPackages" DependsOnTargets="$(RestoreNodeJsPackagesDependsOn)">
+    <!-- boolean conditions should always be in the format '<expression>'=='<expression>' and exists in the format Exists('') -->
+    <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition=" '$(Npm)' == '' "/>
+    
+    <!-- 
+    Not sure what the intention of this condition is. You're setting it above so it will never be empty string ''.
+    
+    I fixed the format of the condition in any case.
+    -->
+    <Exec Command="$(Npm) install" Condition=" '$(Npm)' != '' " />
+    <Message Text="Npm packages restored." Condition=" '$(Tsd)' != '' "/>
+    <Exec Command="$(Tsd) reinstall" Condition=" '$(Tsd)' != '' " />
+    <Message Text="Tsd packages restored." Condition=" '$(Npm)' != '' "/>
+    
+    <!-- The string after $(Bower) shoud likely be a property and not hard coded -->
+    <Exec Command="$(Bower) install --config.interactive=false" Condition=" '$(Bower)' != '' " />
+    <Message Text="Bower packages restored." Condition=" '$(Bower)' != '' "/>
   </Target>
 
-  <Target Name="RunJsBuildTasks" BeforeTargets="AfterBuild">
-    <Exec Command="$(Gulp) $(Configuration)" Condition="$(Gulp)" />
-    <Message Text="Gulp tasks for ($Configuration) ran." Condition="$(Gulp) != ''"/>
+  
+  <Target Name="RunJsBuildTasks" DependsOnTargets="$(RunJsBuildTasksDependsOn)">
+
+    <Exec Command="$(Gulp) $(Configuration)" Condition=" '$(Gulp)' != '' " />
+    <Message Text="Gulp tasks for ($Configuration) ran." Condition=" '$(Gulp)' != '' "/>
     <Exec Command="$(Grunt) $(Configuration)" Condition="$(Grunt)"/>
-    <Message Text="Grunt tasks for ($Configuration) ran." Condition="$(Grunt) != ''"/>
+    <Message Text="Grunt tasks for ($Configuration) ran." Condition=" '$(Grunt)' != '' "/>
+  </Target>
+
+  <Target Name="PrintValues">
+    <Message Text="
+node_modules: [$(node_modules)]
+Bower [$(Bower)]
+Tsd [$(Tsd)]
+Gulp [$(Gulp)]
+Grunt [$(Grunt)]
+             " Importance="high"/>
   </Target>
 </Project>
