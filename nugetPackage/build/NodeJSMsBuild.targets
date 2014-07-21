@@ -110,13 +110,4 @@
     <Message Text="Grunt tasks for ($Configuration) ran." Condition=" '$(Grunt)' != '' "/>
   </Target>
 
-  <Target Name="PrintValues">
-    <Message Text="
-node_modules: [$(node_modules)]
-Bower [$(Bower)]
-Tsd [$(Tsd)]
-Gulp [$(Gulp)]
-Grunt [$(Grunt)]
-             " Importance="high"/>
-  </Target>
 </Project>
