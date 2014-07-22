@@ -90,3 +90,5 @@ got Node and NPM installed in your **PATH**, but all the other tools are install
 as _local_ packages.
 
 If you think I mess some scenario, please open an [issue](https://github.com/XVincentX/NodeJsMsBuild/issues)
+
+The project logo was kindly assembled by [R.Iazzetta](https://www.linkedin.com/profile/view?id=299757718)
