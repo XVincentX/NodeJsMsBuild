@@ -1,7 +1,7 @@
 NodeJsMsBuild
 =============
 
-![Alt text](https://cdn.rawgit.com/XVincentX/NodeJsMsBuild/master/NodeJsMsBuild.png)
+![Alt text](https://rawgit.com/XVincentX/NodeJsMsBuild/master/NodeJsMsBuild.png)
 **MsBuild tasks for NodeJS tools**
 
 This project is a collection of utilities that will inject some targets/files into your
