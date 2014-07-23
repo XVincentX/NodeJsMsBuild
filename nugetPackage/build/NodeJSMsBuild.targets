@@ -3,8 +3,8 @@
 
 <Target Name="FindTools">
   <PropertyGroup>
-    <Npm Condition=" '$(npm)'=='' And Exists('npm') ">npm</Npm>
-    <Npm Condition=" '$(npm)'=='' And Exists('.bin/npm') ">.bin/npm</Npm>
+    <Npm Condition=" '$(Npm)'=='' And Exists('npm') ">npm</Npm>
+    <Npm Condition=" '$(Npm)'=='' And Exists('.bin/npm') ">.bin/npm</Npm>
 
     <Bower Condition=" '$(Bower)'=='' And Exists('bower') ">bower</Bower>
     <Bower Condition=" '$(Bower)'=='' And Exists('.bin/bower') ">.bin/bower</Bower>
@@ -23,7 +23,6 @@
     <Grunt Condition=" '$(Grunt)'=='' And Exists('node_modules/.bin/gulp') ">node_modules/.bin/gulp</Grunt>
   </PropertyGroup>
 </Target>
-
 
   <PropertyGroup>
     <CleanDependsOn>
@@ -62,10 +61,15 @@
 
     <RunJsBuildTasksDependsOn>
       $(RunJsBuildTasksDependsOn);
+      FindTools;
     </RunJsBuildTasksDependsOn>
   </PropertyGroup>
 
   <Target Name="RestoreNodeJsPackages" DependsOnTargets="$(RestoreNodeJsPackagesDependsOn)">
+    <Message Text="
+    Npm: $(Npm)
+    Bower: $(Bower)
+    Grunt: $(Grunt)" Importance="high"/>
     <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition=" '$(Npm)' == '' "/>
     <Exec Command="$(Npm) install" Condition=" '$(Npm)' != '' " />
     <Message Text="Npm packages restored." Condition=" '$(Tsd)' != '' "/>
@@ -80,7 +84,7 @@
 
     <Exec Command="$(Gulp) $(Configuration)" Condition=" '$(Gulp)' != '' " />
     <Message Text="Gulp tasks for ($Configuration) ran." Condition=" '$(Gulp)' != '' "/>
-    <Exec Command="$(Grunt) $(Configuration)" Condition="$(Grunt)"/>
+    <Exec Command="$(Grunt) $(Configuration)" Condition="$(Grunt) != '' "/>
     <Message Text="Grunt tasks for ($Configuration) ran." Condition=" '$(Grunt)' != '' "/>
   </Target>
 
