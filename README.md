@@ -2,7 +2,13 @@ NodeJsMsBuild
 =============
 
 ![Alt text](https://rawgit.com/XVincentX/NodeJsMsBuild/master/NodeJsMsBuild.png)
-**MsBuild tasks for NodeJS tools**
+
+# MsBuild tasks for NodeJS tools
+
+Build status: [![Build status](https://ci.appveyor.com/api/projects/status/ywwyx7c541p3e9cx/branch/master)](https://ci.appveyor.com/project/XVincentX/nodejsmsbuild/branch/master)
+
+[CI Nuget feed](https://ci.appveyor.com/nuget/nodejsmsbuild-5f8xp8p45090)
+
 
 This project is a collection of utilities that will inject some targets/files into your
 Visual Studio project and integrating NodeJs tools.
@@ -90,7 +96,5 @@ got Node and NPM installed in your **PATH**, but all the other tools are install
 as _local_ packages.
 
 If you think I mess some scenario, please open an [issue](https://github.com/XVincentX/NodeJsMsBuild/issues)
-
-Build status: [![Build status](https://ci.appveyor.com/api/projects/status/ywwyx7c541p3e9cx/branch/master)](https://ci.appveyor.com/project/XVincentX/nodejsmsbuild/branch/master)
 
 The project logo was kindly assembled by [R.Iazzetta](https://www.linkedin.com/profile/view?id=299757718)
