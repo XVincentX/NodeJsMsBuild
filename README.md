@@ -91,4 +91,6 @@ as _local_ packages.
 
 If you think I mess some scenario, please open an [issue](https://github.com/XVincentX/NodeJsMsBuild/issues)
 
+Build status: [![Build status](https://ci.appveyor.com/api/projects/status/ywwyx7c541p3e9cx/branch/master)](https://ci.appveyor.com/project/XVincentX/nodejsmsbuild/branch/master)
+
 The project logo was kindly assembled by [R.Iazzetta](https://www.linkedin.com/profile/view?id=299757718)
