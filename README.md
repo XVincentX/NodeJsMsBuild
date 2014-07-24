@@ -64,23 +64,13 @@ The process will not fail if the executables will not be found, but a warning
 message will be emitted.
 
 ## How do you detect presence of NodeJS modules?
-I think the code will be more clear of the words in this case:
-```xml
-<PropertyGroup>
-  <HasNpm>$(Get-Command "npm" -errorAction SilentlyContinue || Get-Command ".bin/npm" -errorAction SilentlyContinue)</HasNpm>
-  <HasGulp>$(Get-Command "gulp" -errorAction SilentlyContinue || Get-Command ".bin/gulp" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/gulp" -errorAction SilentlyContinue)</HasGulp>
-  <HasGrunt>$(Get-Command "grunt" -errorAction SilentlyContinue || Get-Command ".bin/grunt" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/grunt" -errorAction SilentlyContinue)</HasGrunt>
-  <HasBower>$(Get-Command "bower" -errorAction SilentlyContinue || Get-Command ".bin/bower" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/bower" -errorAction SilentlyContinue)</HasBower>
-  <HasTsd>$(Get-Command "tsd" -errorAction SilentlyContinue || Get-Command ".bin/tsd" -errorAction SilentlyContinue) || Get-Command ".node_modules/.bin/tsd" -errorAction SilentlyContinue)</HasTsd>
-</PropertyGroup>
-
-<!--Draft, it does not work yet-->
-```
 To go into details, it will:
 * Check for commands into your __PATH__. This will be fine if you install NodeJS,
 NPM and other modules as global ones.
 * Check for commands into _./bin_ path of your project. This is the case when
 you do not want to install packages into your system, but as standalone executables.
+* Check into *node_modules* bin folder of your project.
+
 You can make this using nuget package manager too.
 [NodeJs](http://www.nuget.org/packages/Node.js/),
 [Npm](http://www.nuget.org/packages/Npm/),
