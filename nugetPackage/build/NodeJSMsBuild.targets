@@ -1,26 +1,50 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
 
 
-<Target Name="FindTools">
+<Target Name="FindNPMTools">
+  <Message Text="$(PATH)"/>
+  <Exec ContinueOnError="True" Command='npm'>
+    <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+ </Exec>
+ <Exec ContinueOnError="True" Command='bower'>
+   <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+</Exec>
+<Exec ContinueOnError="True" Command='tsd'>
+  <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+</Exec>
+
   <PropertyGroup>
-    <Npm Condition=" '$(Npm)'=='' And Exists('npm') ">npm</Npm>
-    <Npm Condition=" '$(Npm)'=='' And Exists('.bin/npm') ">.bin/npm</Npm>
+    <Npm Condition="ErrorCode == 0">npm</Npm>
+    <Npm Condition=" '$(Npm)'=='' And $(ErrorCode) != 0 ">npm</Npm>
+    <Npm Condition=" '$(Npm)'=='' And Exists('.bin/npm.cmd') ">.bin/npm.cmd</Npm>
 
-    <Bower Condition=" '$(Bower)'=='' And Exists('bower') ">bower</Bower>
-    <Bower Condition=" '$(Bower)'=='' And Exists('.bin/bower') ">.bin/bower</Bower>
-    <Bower Condition=" '$(Bower)'=='' And Exists('node_modules/.bin/bower') ">node_modules/.bin/bower</Bower>
+    <Bower Condition="ErrorCode == 0">bower</Bower>
+    <Bower Condition=" '$(Bower)'=='' And Exists('.bin/bower.cmd') ">.bin/bower.cmd</Bower>
+    <Bower Condition=" '$(Bower)'=='' And Exists('node_modules/.bin/bower') ">node_modules/.bin/bower.cmd</Bower>
+    <BowerParam>--config.interactive=false</BowerParam>
 
-    <Tsd Condition=" '$(Tsd)'=='' And Exists('tsd') ">tsd</Tsd>
-    <Tsd Condition=" '$(Tsd)'=='' And Exists('.bin/tsd') ">.bin/tsd</Tsd>
-    <Tsd Condition=" '$(Tsd)'=='' And Exists('node_modules/.bin/tsd') ">node_modules/.bin/tsd</Tsd>
+    <Tsd Condition="ErrorCode == 0">bower</Tsd>
+    <Tsd Condition=" '$(Tsd)'=='' And Exists('.bin/tsd.cmd') ">.bin/tsd.cmd</Tsd>
+    <Tsd Condition=" '$(Tsd)'=='' And Exists('node_modules/.bin/tsd') ">node_modules/.bin/tsd.cmd</Tsd>
 
-    <Gulp Condition=" '$(Gulp)'=='' And Exists('gulp') ">gulp</Gulp>
-    <Gulp Condition=" '$(Gulp)'=='' And Exists('.bin/gulp') ">.bin/gulp</Gulp>
-    <Gulp Condition=" '$(Gulp)'=='' And Exists('node_modules/.bin/gulp') ">node_modules/.bin/gulp</Gulp>
+  </PropertyGroup>
+</Target>
 
-    <Grunt Condition=" '$(Grunt)'=='' And Exists('gulp') ">gulp</Grunt>
-    <Grunt Condition=" '$(Grunt)'=='' And Exists('.bin/gulp') ">.bin/gulp</Grunt>
-    <Grunt Condition=" '$(Grunt)'=='' And Exists('node_modules/.bin/gulp') ">node_modules/.bin/gulp</Grunt>
+<Target Name="FindTaskTools">
+  <Exec ContinueOnError="True" Command='gulp'>
+    <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+ </Exec>
+ <Exec ContinueOnError="True" Command='grunt'>
+   <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+</Exec>
+  <PropertyGroup>
+    <Gulp Condition="ErrorCode == 0">gulp</Gulp>
+    <Gulp Condition=" '$(Gulp)'=='' And Exists('.bin/gulp.cmd') ">.bin/gulp</Gulp>
+    <Gulp Condition=" '$(Gulp)'=='' And Exists('node_modules/.bin/gulp') ">node_modules/.bin/gulp.cmd</Gulp>
+
+    <Grunt Condition="ErrorCode == 0">grunt</Grunt>
+    <Grunt Condition=" '$(Grunt)'=='' And Exists('.bin/grunt.cmd') ">.bin/grunt.cmd</Grunt>
+    <Grunt Condition=" '$(Grunt)'=='' And Exists('node_modules/.bin/grunt') ">node_modules/.bin/grunt.cmd</Grunt>
   </PropertyGroup>
 </Target>
 
@@ -57,11 +81,12 @@
 
     <RestoreNodeJsPackagesDependsOn>
       $(RestoreNodeJsPackagesDependsOn);
+      FindNPMTools;
     </RestoreNodeJsPackagesDependsOn>
 
     <RunJsBuildTasksDependsOn>
       $(RunJsBuildTasksDependsOn);
-      FindTools;
+      FindTaskTools;
     </RunJsBuildTasksDependsOn>
   </PropertyGroup>
 
@@ -84,7 +109,7 @@
 
     <Exec Command="$(Gulp) $(Configuration)" Condition=" '$(Gulp)' != '' " />
     <Message Text="Gulp tasks for ($Configuration) ran." Condition=" '$(Gulp)' != '' "/>
-    <Exec Command="$(Grunt) $(Configuration)" Condition="$(Grunt) != '' "/>
+    <Exec Command="$(Grunt) $(Configuration)" Condition=" '$(Grunt)' != '' "/>
     <Message Text="Grunt tasks for ($Configuration) ran." Condition=" '$(Grunt)' != '' "/>
   </Target>
 
