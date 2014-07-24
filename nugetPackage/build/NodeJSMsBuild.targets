@@ -2,28 +2,28 @@
 
 
 <Target Name="FindNPMTools">
-  <Message Text="$(PATH)"/>
-  <Exec ContinueOnError="True" Command='npm'>
-    <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+  <Exec ContinueOnError="True" Command='npm -v'>
+    <Output TaskParameter="ExitCode" PropertyName="NpmErrorCode"/>
  </Exec>
- <Exec ContinueOnError="True" Command='bower'>
-   <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+ <Exec ContinueOnError="True" Command='bower -v'>
+   <Output TaskParameter="ExitCode" PropertyName="BowerErrorCode"/>
 </Exec>
-<Exec ContinueOnError="True" Command='tsd'>
-  <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+<Exec ContinueOnError="True" Command='tsd -V'>
+  <Output TaskParameter="ExitCode" PropertyName="TsdErrorCode"/>
 </Exec>
+
 
   <PropertyGroup>
-    <Npm Condition="ErrorCode == 0">npm</Npm>
-    <Npm Condition=" '$(Npm)'=='' And $(ErrorCode) != 0 ">npm</Npm>
+    <Npm Condition="$(NpmErrorCode) == 0">npm</Npm>
+    <Npm Condition=" '$(Npm)'=='' And $(NpmErrorCode) != 0 ">npm</Npm>
     <Npm Condition=" '$(Npm)'=='' And Exists('.bin/npm.cmd') ">.bin/npm.cmd</Npm>
 
-    <Bower Condition="ErrorCode == 0">bower</Bower>
+    <Bower Condition="$(BowerErrorCode) == 0">bower</Bower>
     <Bower Condition=" '$(Bower)'=='' And Exists('.bin/bower.cmd') ">.bin/bower.cmd</Bower>
     <Bower Condition=" '$(Bower)'=='' And Exists('node_modules/.bin/bower') ">node_modules/.bin/bower.cmd</Bower>
     <BowerParam>--config.interactive=false</BowerParam>
 
-    <Tsd Condition="ErrorCode == 0">bower</Tsd>
+    <Tsd Condition="$(TsdErrorCode) == 0">tsd</Tsd>
     <Tsd Condition=" '$(Tsd)'=='' And Exists('.bin/tsd.cmd') ">.bin/tsd.cmd</Tsd>
     <Tsd Condition=" '$(Tsd)'=='' And Exists('node_modules/.bin/tsd') ">node_modules/.bin/tsd.cmd</Tsd>
 
@@ -31,18 +31,18 @@
 </Target>
 
 <Target Name="FindTaskTools">
-  <Exec ContinueOnError="True" Command='gulp'>
-    <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+  <Exec ContinueOnError="True" Command='gulp -v'>
+    <Output TaskParameter="ExitCode" PropertyName="GulpErrorCode"/>
  </Exec>
- <Exec ContinueOnError="True" Command='grunt'>
-   <Output TaskParameter="ExitCode" PropertyName="ErrorCode"/>
+ <Exec ContinueOnError="True" Command='grunt -v'>
+   <Output TaskParameter="ExitCode" PropertyName="GruntErrorCode"/>
 </Exec>
   <PropertyGroup>
-    <Gulp Condition="ErrorCode == 0">gulp</Gulp>
+    <Gulp Condition="$(GulpErrorCode) == 0">gulp</Gulp>
     <Gulp Condition=" '$(Gulp)'=='' And Exists('.bin/gulp.cmd') ">.bin/gulp</Gulp>
     <Gulp Condition=" '$(Gulp)'=='' And Exists('node_modules/.bin/gulp') ">node_modules/.bin/gulp.cmd</Gulp>
 
-    <Grunt Condition="ErrorCode == 0">grunt</Grunt>
+    <Grunt Condition="$(GruntErrorCode) == 0">grunt</Grunt>
     <Grunt Condition=" '$(Grunt)'=='' And Exists('.bin/grunt.cmd') ">.bin/grunt.cmd</Grunt>
     <Grunt Condition=" '$(Grunt)'=='' And Exists('node_modules/.bin/grunt') ">node_modules/.bin/grunt.cmd</Grunt>
   </PropertyGroup>
@@ -91,22 +91,17 @@
   </PropertyGroup>
 
   <Target Name="RestoreNodeJsPackages" DependsOnTargets="$(RestoreNodeJsPackagesDependsOn)">
-    <Message Text="
-    Npm: $(Npm)
-    Bower: $(Bower)
-    Grunt: $(Grunt)" Importance="high"/>
     <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition=" '$(Npm)' == '' "/>
     <Exec Command="$(Npm) install" Condition=" '$(Npm)' != '' " />
-    <Message Text="Npm packages restored." Condition=" '$(Tsd)' != '' "/>
+    <Message Text="Npm packages restored." Condition=" '$(Npm)' != '' "/>
     <Exec Command="$(Tsd) reinstall" Condition=" '$(Tsd)' != '' " />
-    <Message Text="Tsd packages restored." Condition=" '$(Npm)' != '' "/>
+    <Message Text="Tsd packages restored." Condition=" '$(Tsd)' != '' "/>
     <Exec Command="$(Bower) install $(BowerParam)" Condition=" '$(Bower)' != '' " />
     <Message Text="Bower packages restored." Condition=" '$(Bower)' != '' "/>
   </Target>
 
 
   <Target Name="RunJsBuildTasks" DependsOnTargets="$(RunJsBuildTasksDependsOn)">
-
     <Exec Command="$(Gulp) $(Configuration)" Condition=" '$(Gulp)' != '' " />
     <Message Text="Gulp tasks for ($Configuration) ran." Condition=" '$(Gulp)' != '' "/>
     <Exec Command="$(Grunt) $(Configuration)" Condition=" '$(Grunt)' != '' "/>
