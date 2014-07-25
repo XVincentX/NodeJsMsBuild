@@ -19,7 +19,7 @@ into your project. They are up to you.
 This project is born after [this article](http://www.dotnet-programming.com/post/2014/07/11/Integrate-NodeJS-tools-in-Visual-StudioTFS.aspx).
 
 If you're looking for binaries, point your browser to the
-[nuget package](http://nuget.org/packages...)
+[nuget package](https://www.nuget.org/packages/NodeJSMsBuild/)
 
 ## I want to build on my own
 ```javascript
