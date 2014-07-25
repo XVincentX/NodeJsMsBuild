@@ -11,6 +11,9 @@
 <Exec ContinueOnError="True" Command='tsd -V'>
   <Output TaskParameter="ExitCode" PropertyName="TsdErrorCode"/>
 </Exec>
+<Exec ContinueOnError="True" Command='git --version'>
+  <Output TaskParameter="ExitCode" PropertyName="GitErrorCode"/>
+</Exec>
 
 
   <PropertyGroup>
@@ -94,10 +97,10 @@
     <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition=" '$(Npm)' == '' "/>
     <Exec Command="$(Npm) install" Condition=" '$(Npm)' != '' " />
     <Message Text="Npm packages restored." Condition=" '$(Npm)' != '' "/>
-    <Exec Command="$(Tsd) reinstall" Condition=" '$(Tsd)' != '' " />
-    <Message Text="Tsd packages restored." Condition=" '$(Tsd)' != '' "/>
-    <Exec Command="$(Bower) install $(BowerParam)" Condition=" '$(Bower)' != '' " />
-    <Message Text="Bower packages restored." Condition=" '$(Bower)' != '' "/>
+    <Exec Command="$(Tsd) reinstall" Condition=" '$(Tsd)' != '' And $(GitErrorCode) != 0 " />
+    <Message Text="Tsd packages restored." Condition=" '$(Tsd)' != '' And $(GitErrorCode) != 0 "/>
+    <Exec Command="$(Bower) install $(BowerParam)" Condition=" '$(Bower)' != '' And $(GitErrorCode) != 0 " />
+    <Message Text="Bower packages restored." Condition=" '$(Bower)' != '' And $(GitErrorCode) != 0 "/>
   </Target>
 
 
