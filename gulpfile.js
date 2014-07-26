@@ -28,7 +28,6 @@ gulp.task("default",["nuget-download"],function task()
     {
       nuspec:"NodeJsMsBuild.nuspec",
       nuget: "nuget.exe",
-      version: "1.0.0"
     }))
   .pipe(gulp.dest("NodeJsMsBuild.nupkg"));
 });
