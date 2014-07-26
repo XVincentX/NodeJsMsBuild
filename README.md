@@ -13,8 +13,20 @@ Build status: [![Build status](https://ci.appveyor.com/api/projects/status/ywwyx
 This project is a collection of utilities that will inject some targets/files into your
 Visual Studio project and integrating NodeJs tools.
 
+
 **NOTE:** This project is all about plain MsBuild task. No tools will be inserted
 into your project. They are up to you.
+
+## Yes but why?
+At first, there are a [lot](https://www.nuget.org/packages/nodejs-v.0.8.16/),a
+[lot](https://www.nuget.org/packages/nji/) and a [lot](https://www.nuget.org/packages/Node.js/)
+of nuget packages claiming NodeJS support. I know that more will come in near future.
+The same is for Bower, Grunt, Gulp and other tools.
+I do not know which one to choose, and which one will be updated time
+after time. Futhermore, a lot of users (like me) have got a global npm
+installation and want to take advantage of that one. For this reason I prefer to
+install in your project only the targets with several search options. The rest
+is up to you.
 
 This project is born after [this article](http://www.dotnet-programming.com/post/2014/07/11/Integrate-NodeJS-tools-in-Visual-StudioTFS.aspx).
 
