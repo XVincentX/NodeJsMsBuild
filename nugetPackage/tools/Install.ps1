@@ -21,3 +21,5 @@ if (Test-CommandExists "gulp" -eq $false -and Test-CommandExists "./.bin/gulp" -
   Write-Host "Unable to find gulp; gulpfile.js removed from project. You can find it anyway showing all items"
   $project.ProjectItems.Item('gulpfile.js').Remove()
 }
+
+  $project.ProjectItems.Item('DelFolder.bat').Remove()

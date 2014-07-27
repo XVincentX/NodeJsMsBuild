@@ -72,7 +72,7 @@
 
     <Delete Files="@(_filesToDelete)" />
     <RemoveDir Directories="$(MSBuildProjectDirectory)/bower_components/;$(MSBuildProjectDirectory)/typings/"/>
-    <Exec Command="DelFolder $(node_modules)" />
+    <Exec Command="$(MSBuildProjectDirectory)/DelFolder $(node_modules)" />
   </Target>
 
   <PropertyGroup>

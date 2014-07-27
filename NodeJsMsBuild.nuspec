@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
     <metadata>
         <id>NodeJSMsBuild</id>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
         <title>NodeJSMsBuild</title>
         <authors>Vincenzo Chianese</authors>
         <owners>Vincenzo Chianese</owners>
@@ -15,7 +15,7 @@
     </metadata>
     <files>
         <file src="nugetPackage\build\NodeJSMsBuild.targets" target="build\NodeJSMsBuild.targets" />
-        <file src="nugetPackage\tools\DelFolder.bat" target="tools\DelFolder.bat" />
+        <file src="nugetPackage\tools\DelFolder.bat" target="content\DelFolder.bat" />
         <file src="nugetPackage\tools\Install.ps1" target="tools\Install.ps1" />
         <file src="nugetPackage\content\Gruntfile.js" target="content\Gruntfile.js" />
         <file src="nugetPackage\content\gulpfile.js" target="content\gulpfile.js" />
