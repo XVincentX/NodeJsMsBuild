@@ -6,7 +6,7 @@ NodeJsMsBuild
 # MsBuild tasks for NodeJS tools
 
 Build status: [![Build status](https://ci.appveyor.com/api/projects/status/ywwyx7c541p3e9cx/branch/master)](https://ci.appveyor.com/project/XVincentX/nodejsmsbuild/branch/master)
-Nuget downloads: [![Nuget Downloads](http://img.shields.io/nuget/dt/Microsoft.AspNet.Mvc.svg)](http://img.shields.io/nuget/dt/Microsoft.AspNet.Mvc.svg)
+Nuget downloads: [![Nuget Downloads](http://img.shields.io/nuget/dt/NodeJsMsBuild.svg)](http://img.shields.io/nuget/dt/NodeJsMsBuild.svg)
 
 [CI Nuget feed](https://ci.appveyor.com/nuget/nodejsmsbuild-5f8xp8p45090)
 
