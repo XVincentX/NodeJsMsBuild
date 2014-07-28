@@ -5,7 +5,7 @@ gulp.task("shared"),["shared"],function shared(){
 
 });
 
-gulp.task("default",["shared"],function default(){
+gulp.task("default",["shared"],function defaultTask(){
 
 
 });
