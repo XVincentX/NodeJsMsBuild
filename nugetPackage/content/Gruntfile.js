@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
   });
 
-  grunt.registerTask('default', ["shared"], function default(){
+  grunt.registerTask('default', ["shared"], function defaultTask(){
 
   });
 

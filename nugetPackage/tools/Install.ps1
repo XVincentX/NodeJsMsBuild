@@ -10,13 +10,13 @@ Function Test-CommandExists
  Finally {$ErrorActionPreference=$oldPreference}
 }
 
-if (Test-CommandExists "grunt" -eq $true -and Test-CommandExists "./.bin/grunt" -eq $true -and Test-CommandExists "./node_modules/.bin/grunt" -eq $true)
+if (!(Test-CommandExists "grunt" -eq $true -and Test-CommandExists "./.bin/grunt" -eq $true -and Test-CommandExists "./node_modules/.bin/grunt" -eq $true))
 {
   Write-Host "Unable to find grunt; Gruntfile.js removed from project. You can find it anyway showing all items"
   $project.ProjectItems.Item('Gruntfile.js').Remove()
 }
 
-if (Test-CommandExists "gulp" -eq $true -and Test-CommandExists "./.bin/gulp" -eq $true -and Test-CommandExists "./node_modules/.bin/gulp" -eq $true)
+if (!(Test-CommandExists "gulp" -eq $true -and Test-CommandExists "./.bin/gulp" -eq $true -and Test-CommandExists "./node_modules/.bin/gulp" -eq $true))
 {
   Write-Host "Unable to find gulp; gulpfile.js removed from project. You can find it anyway showing all items"
   $project.ProjectItems.Item('gulpfile.js').Remove()
