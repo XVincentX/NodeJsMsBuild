@@ -1,26 +1,31 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
 
 
-<Target Name="FindNPMTools">
+<Target Name="FindNPM">
   <Exec ContinueOnError="True" Command='npm -v'>
     <Output TaskParameter="ExitCode" PropertyName="NpmErrorCode"/>
  </Exec>
- <Exec ContinueOnError="True" Command='bower -v'>
-   <Output TaskParameter="ExitCode" PropertyName="BowerErrorCode"/>
-</Exec>
-<Exec ContinueOnError="True" Command='tsd -V'>
-  <Output TaskParameter="ExitCode" PropertyName="TsdErrorCode"/>
-</Exec>
-<Exec ContinueOnError="True" Command='git --version'>
-  <Output TaskParameter="ExitCode" PropertyName="GitErrorCode"/>
-</Exec>
 
 
   <PropertyGroup>
     <Npm Condition="$(NpmErrorCode) == 0">npm</Npm>
     <Npm Condition=" '$(Npm)'=='' And $(NpmErrorCode) != 0 ">npm</Npm>
     <Npm Condition=" '$(Npm)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/npm.cmd') ">$(MSBuildProjectDirectory)/.bin/npm.cmd</Npm>
+  </PropertyGroup>
+</Target>
 
+<Target Name ="FindPackageTools" DependsOnTargets="$(FindPackageToolsDependsOn)">
+  <Exec ContinueOnError="True" Command='bower -v'>
+    <Output TaskParameter="ExitCode" PropertyName="BowerErrorCode"/>
+ </Exec>
+ <Exec ContinueOnError="True" Command='tsd -V'>
+   <Output TaskParameter="ExitCode" PropertyName="TsdErrorCode"/>
+ </Exec>
+ <Exec ContinueOnError="True" Command='git --version'>
+   <Output TaskParameter="ExitCode" PropertyName="GitErrorCode"/>
+ </Exec>
+
+  <PropertyGroup>
     <Bower Condition="$(BowerErrorCode) == 0">bower</Bower>
     <Bower Condition=" '$(Bower)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/bower.cmd') ">$(MSBuildProjectDirectory)/.bin/bower.cmd</Bower>
     <Bower Condition=" '$(Bower)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/bower') ">$(MSBuildProjectDirectory)/node_modules/.bin/bower.cmd</Bower>
@@ -29,11 +34,10 @@
     <Tsd Condition="$(TsdErrorCode) == 0">tsd</Tsd>
     <Tsd Condition=" '$(Tsd)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/tsd.cmd') ">$(MSBuildProjectDirectory)/.bin/tsd.cmd</Tsd>
     <Tsd Condition=" '$(Tsd)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/tsd') ">$(MSBuildProjectDirectory)/node_modules/.bin/tsd.cmd</Tsd>
-
   </PropertyGroup>
 </Target>
 
-<Target Name="FindTaskTools">
+<Target Name="FindTaskTools" DependsOnTargets="$(FindPackageToolsDependsOn)">
   <Exec ContinueOnError="True" Command='gulp -v'>
     <Output TaskParameter="ExitCode" PropertyName="GulpErrorCode"/>
  </Exec>
@@ -60,7 +64,31 @@
     <CleanNodeJsFilesDependsOn>
       $(CleanNodeJsFilesDependsOn);
     </CleanNodeJsFilesDependsOn>
+
+    <FindPackageToolsDependsOn>
+      $(FindPackageToolsDependsOn);
+      FindNPM
+    </FindPackageToolsDependsOn>
+
+    <BuildDependsOn>
+      RestoreNodeJsPackages;
+      $(BuildDependsOn);
+      RunJsBuildTasks;
+    </BuildDependsOn>
+
+    <RestoreNodeJsPackagesDependsOn>
+      $(RestoreNodeJsPackagesDependsOn);
+      FindNPM;
+      FindPackageToolsDependsOn;
+    </RestoreNodeJsPackagesDependsOn>
+
+    <RunJsBuildTasksDependsOn>
+      $(RunJsBuildTasksDependsOn);
+      FindTaskTools;
+    </RunJsBuildTasksDependsOn>
+
   </PropertyGroup>
+
   <Target Name="CleanNodeJsFiles" DependsOnTargets="$(CleanNodeJsFilesDependsOn)">
       <ItemGroup>
         <_filesToDelete Remove="@(_filesToDelete)"/>
@@ -75,23 +103,6 @@
     <Exec Command="$(MSBuildProjectDirectory)/DelFolder.bat $(node_modules)" />
   </Target>
 
-  <PropertyGroup>
-    <BuildDependsOn>
-      RestoreNodeJsPackages;
-      $(BuildDependsOn);
-      RunJsBuildTasks;
-    </BuildDependsOn>
-
-    <RestoreNodeJsPackagesDependsOn>
-      $(RestoreNodeJsPackagesDependsOn);
-      FindNPMTools;
-    </RestoreNodeJsPackagesDependsOn>
-
-    <RunJsBuildTasksDependsOn>
-      $(RunJsBuildTasksDependsOn);
-      FindTaskTools;
-    </RunJsBuildTasksDependsOn>
-  </PropertyGroup>
 
   <Target Name="RestoreNodeJsPackages" DependsOnTargets="$(RestoreNodeJsPackagesDependsOn)">
     <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition=" '$(Npm)' == '' "/>
