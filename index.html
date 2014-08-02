@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>NodeJsMsBuild by XVincentX</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>NodeJsMsBuild</h1>
+        <p>MsBuild tasks for NodeJS tools</p>
+        <p class="view"><a href="https://github.com/XVincentX/NodeJsMsBuild">View the Project on GitHub <small>XVincentX/NodeJsMsBuild</small></a></p>
+        <ul>
+          <li><a href="https://github.com/XVincentX/NodeJsMsBuild/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/XVincentX/NodeJsMsBuild/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/XVincentX/NodeJsMsBuild">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="nodejsmsbuild" class="anchor" href="#nodejsmsbuild"><span class="octicon octicon-link"></span></a>NodeJsMsBuild</h1>
+
+<p><img src="https://rawgit.com/XVincentX/NodeJsMsBuild/master/NodeJsMsBuild.png" alt="Alt text"></p>
+
+<h1>
+<a name="msbuild-tasks-for-nodejs-tools" class="anchor" href="#msbuild-tasks-for-nodejs-tools"><span class="octicon octicon-link"></span></a>MsBuild tasks for NodeJS tools</h1>
+
+<p>Build status: <a href="https://ci.appveyor.com/project/XVincentX/nodejsmsbuild/branch/master"><img src="https://ci.appveyor.com/api/projects/status/ywwyx7c541p3e9cx/branch/master" alt="Build status"></a>
+Nuget downloads: <a href="http://img.shields.io/nuget/dt/NodeJsMsBuild.svg"><img src="http://img.shields.io/nuget/dt/NodeJsMsBuild.svg" alt="Nuget Downloads"></a></p>
+
+<p><a href="https://ci.appveyor.com/nuget/nodejsmsbuild-5f8xp8p45090">CI Nuget feed</a></p>
+
+<p>This project is a collection of utilities that will inject some targets/files into your
+Visual Studio project and integrating NodeJs tools.</p>
+
+<p><strong>NOTE:</strong> This project is all about plain MsBuild task. No tools will be inserted
+into your project. They are up to you.</p>
+
+<h2>
+<a name="yes-but-why" class="anchor" href="#yes-but-why"><span class="octicon octicon-link"></span></a>Yes but why?</h2>
+
+<p>At first, there are a <a href="https://www.nuget.org/packages/nodejs-v.0.8.16/">lot</a>,a
+<a href="https://www.nuget.org/packages/nji/">lot</a> and a <a href="https://www.nuget.org/packages/Node.js/">lot</a>
+of nuget packages claiming NodeJS support. I know that more will come in near future.
+The same is for Bower, Grunt, Gulp and other tools.
+I do not know which one to choose, and which one will be updated time
+after time. Futhermore, a lot of users (like me) have got a global npm
+installation and want to take advantage of that one. For this reason I prefer to
+install in your project only the targets with several search options. The rest
+is up to you.</p>
+
+<p>This project is born after <a href="http://www.dotnet-programming.com/post/2014/07/11/Integrate-NodeJS-tools-in-Visual-StudioTFS.aspx">this article</a>.</p>
+
+<p>If you're looking for binaries, point your browser to the
+<a href="https://www.nuget.org/packages/NodeJSMsBuild/">nuget package</a></p>
+
+<h2>
+<a name="i-want-to-build-on-my-own" class="anchor" href="#i-want-to-build-on-my-own"><span class="octicon octicon-link"></span></a>I want to build on my own</h2>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">grunt</span>
+</pre></div>
+
+<p>This will output a nuget package that you may upload on your nuget feed.</p>
+
+<p>Clean generated code</p>
+
+<div class="highlight highlight-javascript"><pre><span class="nx">grunt</span> <span class="nx">clean</span> <span class="c1">//I think it does not work now.</span>
+</pre></div>
+
+<h2>
+<a name="gimme-the-bits" class="anchor" href="#gimme-the-bits"><span class="octicon octicon-link"></span></a>Gimme the bits</h2>
+
+<p>Open your Visual Studio copy and search for <em>NodeJsMsBuild</em> package.
+Once installed, it will</p>
+
+<ul>
+<li>
+<p>Insert into your project a <strong>Gruntfile.js</strong> and a <strong>gulpfile.js</strong>. Both of them
+have got:</p>
+
+<ul>
+<li>A <em>shared</em> task</li>
+<li>A <em>default</em> task</li>
+<li>A <em>Debug</em> task</li>
+<li>A <em>Release</em> task</li>
+</ul>
+<p>All of these are empty and all depends from <em>shared</em>.</p>
+</li>
+<li><p>The <em>Install.ps1</em> script will detect presence of package managers and will
+remove from project (but not delete from file system) the unnecessary task files.
+If you have got both of task runners (will you?), both files will be leaved in
+your project.</p></li>
+<li>
+<p>3 named targets will be imported into your projects. These are:</p>
+
+<ul>
+<li>
+<strong>CleanNodeJsFiles</strong>: this task will delete all <em>Javascript</em> filed created by
+Typescript compilation process (the .js and .js.map). Then it will delete the
+entire <em>node_modules/</em> directory and <em>typings</em> folder as well.</li>
+<li>
+<strong>RestoreNodeJsPackages</strong>: This target will run the following commands:
+
+<ul>
+<li>npm install</li>
+<li>tsd reinstall</li>
+<li>bower install</li>
+</ul>
+</li>
+<li>
+<strong>RunJsBuildTasks</strong>: This target will run grunt/gulp  tasks based on your
+configuration (Debug/Release).</li>
+</ul>
+</li>
+</ul><p>The process will not fail if the executables will not be found, but a warning
+message will be emitted.</p>
+
+<h2>
+<a name="how-do-you-detect-presence-of-nodejs-modules" class="anchor" href="#how-do-you-detect-presence-of-nodejs-modules"><span class="octicon octicon-link"></span></a>How do you detect presence of NodeJS modules?</h2>
+
+<p>To go into details, it will:</p>
+
+<ul>
+<li>Check for commands into your <strong>PATH</strong>. This will be fine if you install NodeJS,
+NPM and other modules as global ones.</li>
+<li>Check for commands into <em>./bin</em> path of your project. This is the case when
+you do not want to install packages into your system, but as standalone executables.</li>
+<li>Check into <em>node_modules</em> bin folder of your project.</li>
+</ul><p>You can make this using nuget package manager too.
+<a href="http://www.nuget.org/packages/Node.js/">NodeJs</a>,
+<a href="http://www.nuget.org/packages/Npm/">Npm</a>,
+<a href="http://www.nuget.org/packages/Bower/">Bower</a>,
+<a href="http://www.nuget.org/packages/Gulp.js/">Gulp</a> and
+<a href="http://www.nuget.org/packages/Grunt.js/">Grunt</a>
+are avaiable as nuget packages.</p>
+
+<p>There is no support for <em>tsd</em> at the moment, but I think <a href="">he</a> will add it soon
+  if you ask him.</p>
+
+<ul>
+<li>Check for binaries into <em>node_modules</em> directory. This is the case if you have
+got Node and NPM installed in your <strong>PATH</strong>, but all the other tools are installed
+as <em>local</em> packages.</li>
+</ul><p>If you think I mess some scenario, please open an <a href="https://github.com/XVincentX/NodeJsMsBuild/issues">issue</a></p>
+
+<p>The project logo was kindly assembled by <a href="https://www.linkedin.com/profile/view?id=299757718">R.Iazzetta</a></p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/XVincentX">XVincentX</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
