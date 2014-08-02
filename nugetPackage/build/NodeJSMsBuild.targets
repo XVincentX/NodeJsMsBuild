@@ -1,6 +1,48 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
 
 
+  <PropertyGroup>
+
+    <BuildDependsOn>
+      RestoreNodeJsPackages;
+      RestoreToolsPackages;
+      $(BuildDependsOn);
+      RunJsBuildTasks;
+    </BuildDependsOn>
+
+    <RestoreNodeJsPackagesDependsOn>
+      $(RestoreNodeJsPackagesDependsOn);
+      FindNPM;
+      FindPackageTools;
+    </RestoreNodeJsPackagesDependsOn>
+
+    <FindPackageToolsDependsOn>
+      $(FindPackageToolsDependsOn);
+      FindNPM
+    </FindPackageToolsDependsOn>
+
+    <CleanDependsOn>
+      $(CleanDependsOn);
+      CleanNodeJsFiles
+    </CleanDependsOn>
+
+    <CleanNodeJsFilesDependsOn>
+      $(CleanNodeJsFilesDependsOn);
+    </CleanNodeJsFilesDependsOn>
+
+    <RunJsBuildTasksDependsOn>
+      $(RunJsBuildTasksDependsOn);
+      FindTaskTools;
+    </RunJsBuildTasksDependsOn>
+
+    <RestoreToolsPackagesDependsOn>
+      $(RestoreToolsPackagesDependsOn);
+      RestoreNodeJsPackages;
+    </RestoreToolsPackagesDependsOn>
+
+  </PropertyGroup>
+
+
 <Target Name="FindNPM">
   <Exec ContinueOnError="True" Command='npm -v'>
     <Output TaskParameter="ExitCode" PropertyName="NpmErrorCode"/>
@@ -55,44 +97,6 @@
   </PropertyGroup>
 </Target>
 
-  <PropertyGroup>
-    <CleanDependsOn>
-      $(CleanDependsOn);
-      CleanNodeJsFiles
-    </CleanDependsOn>
-
-    <CleanNodeJsFilesDependsOn>
-      $(CleanNodeJsFilesDependsOn);
-    </CleanNodeJsFilesDependsOn>
-
-    <FindPackageToolsDependsOn>
-      $(FindPackageToolsDependsOn);
-      FindNPM
-    </FindPackageToolsDependsOn>
-
-    <BuildDependsOn>
-      RestoreNodeJsPackages;
-      $(BuildDependsOn);
-      RunJsBuildTasks;
-    </BuildDependsOn>
-
-    <RestoreNodeJsPackagesDependsOn>
-      $(RestoreNodeJsPackagesDependsOn);
-      FindNPM;
-      FindPackageToolsDependsOn;
-    </RestoreNodeJsPackagesDependsOn>
-
-    <RunJsBuildTasksDependsOn>
-      $(RunJsBuildTasksDependsOn);
-      FindTaskTools;
-    </RunJsBuildTasksDependsOn>
-    <RestoreToolsPackagesDependsOn>
-      $(RestoreToolsPackagesDependsOn);
-      RestoreNodeJsPackages;
-    </RestoreToolsPackagesDependsOn>
-
-  </PropertyGroup>
-
   <Target Name="CleanNodeJsFiles" DependsOnTargets="$(CleanNodeJsFilesDependsOn)">
       <ItemGroup>
         <_filesToDelete Remove="@(_filesToDelete)"/>
@@ -115,10 +119,10 @@
   </Target>
 
   <Target Name="RestoreToolsPackages" DependsOnTargets="$(RestoreToolsPackagesDependsOn)">
-    <Exec Command="$(Tsd) reinstall" Condition=" '$(Tsd)' != '' And $(GitErrorCode) != 0 " />
-    <Message Text="Tsd packages restored." Condition=" '$(Tsd)' != '' And $(GitErrorCode) != 0 "/>
-    <Exec Command="$(Bower) install $(BowerParam)" Condition=" '$(Bower)' != '' And $(GitErrorCode) != 0 " />
-    <Message Text="Bower packages restored." Condition=" '$(Bower)' != '' And $(GitErrorCode) != 0 "/>
+    <Exec Command="$(Tsd) reinstall" Condition=" '$(Tsd)' != '' And $(GitErrorCode) == 0 " />
+    <Message Text="Tsd packages restored." Condition=" '$(Tsd)' != '' And $(GitErrorCode) == 0 "/>
+    <Exec Command="$(Bower) install $(BowerParam)" Condition=" '$(Bower)' != '' And $(GitErrorCode) == 0 " />
+    <Message Text="Bower packages restored." Condition=" '$(Bower)' != '' And $(GitErrorCode) == 0 "/>
   </Target>
 
   <Target Name="RunJsBuildTasks" DependsOnTargets="$(RunJsBuildTasksDependsOn)">
