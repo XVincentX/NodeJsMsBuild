@@ -86,6 +86,10 @@
       $(RunJsBuildTasksDependsOn);
       FindTaskTools;
     </RunJsBuildTasksDependsOn>
+    <RestoreToolsPackagesDependsOn>
+      $(RestoreToolsPackagesDependsOn);
+      RestoreNodeJsPackages;
+    </RestoreToolsPackagesDependsOn>
 
   </PropertyGroup>
 
@@ -108,12 +112,14 @@
     <Warning Text="Unable to find npm command line; NodeJS tasks will not be executed" Condition=" '$(Npm)' == '' "/>
     <Exec Command="$(Npm) install" Condition=" '$(Npm)' != '' " />
     <Message Text="Npm packages restored." Condition=" '$(Npm)' != '' "/>
+  </Target>
+
+  <Target Name="RestoreToolsPackages" DependsOnTargets="$(RestoreToolsPackagesDependsOn)">
     <Exec Command="$(Tsd) reinstall" Condition=" '$(Tsd)' != '' And $(GitErrorCode) != 0 " />
     <Message Text="Tsd packages restored." Condition=" '$(Tsd)' != '' And $(GitErrorCode) != 0 "/>
     <Exec Command="$(Bower) install $(BowerParam)" Condition=" '$(Bower)' != '' And $(GitErrorCode) != 0 " />
     <Message Text="Bower packages restored." Condition=" '$(Bower)' != '' And $(GitErrorCode) != 0 "/>
   </Target>
-
 
   <Target Name="RunJsBuildTasks" DependsOnTargets="$(RunJsBuildTasksDependsOn)">
     <Exec Command="$(Gulp) $(Configuration)" Condition=" '$(Gulp)' != '' " />
