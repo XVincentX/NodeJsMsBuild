@@ -108,7 +108,7 @@
 
     <Delete Files="@(_filesToDelete)" />
     <RemoveDir Directories="$(MSBuildProjectDirectory)/bower_components/;$(MSBuildProjectDirectory)/typings/"/>
-    <Exec Command="$(MSBuildProjectDirectory)/DelFolder.bat $(node_modules)" />
+    <Exec Command="$(MSBuildProjectDirectory)/DelFolder.bat $(MSBuildProjectDirectory)/node_modules" />
   </Target>
 
 
