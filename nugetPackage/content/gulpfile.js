@@ -1,6 +1,6 @@
 var gulp = require("gulp");
 
-gulp.task("shared"),["shared"],function shared(){
+gulp.task("shared",["shared"],function shared(){
 
 
 });
