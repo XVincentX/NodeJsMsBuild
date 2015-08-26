@@ -52,7 +52,7 @@
   <PropertyGroup>
     <Npm Condition="$(NpmErrorCode) == 0">npm</Npm>
     <Npm Condition=" '$(Npm)'=='' And $(NpmErrorCode) != 0 ">npm</Npm>
-    <Npm Condition=" '$(Npm)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/npm.cmd') ">$(MSBuildProjectDirectory)/.bin/npm.cmd</Npm>
+    <Npm Condition=" '$(Npm)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/npm.cmd') ">"$(MSBuildProjectDirectory)/.bin/npm.cmd"</Npm>
   </PropertyGroup>
 </Target>
 
@@ -69,13 +69,13 @@
 
   <PropertyGroup>
     <Bower Condition="$(BowerErrorCode) == 0">bower</Bower>
-    <Bower Condition=" '$(Bower)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/bower.cmd') ">$(MSBuildProjectDirectory)/.bin/bower.cmd</Bower>
-    <Bower Condition=" '$(Bower)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/bower') ">$(MSBuildProjectDirectory)/node_modules/.bin/bower.cmd</Bower>
+    <Bower Condition=" '$(Bower)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/bower.cmd') ">"$(MSBuildProjectDirectory)/.bin/bower.cmd"</Bower>
+    <Bower Condition=" '$(Bower)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/bower') ">"$(MSBuildProjectDirectory)/node_modules/.bin/bower.cmd"</Bower>
     <BowerParam Condition="'$(BowerParam)' == ''">--config.interactive=false</BowerParam>
 
     <Tsd Condition="$(TsdErrorCode) == 0">tsd</Tsd>
-    <Tsd Condition=" '$(Tsd)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/tsd.cmd') ">$(MSBuildProjectDirectory)/.bin/tsd.cmd</Tsd>
-    <Tsd Condition=" '$(Tsd)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/tsd') ">$(MSBuildProjectDirectory)/node_modules/.bin/tsd.cmd</Tsd>
+    <Tsd Condition=" '$(Tsd)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/tsd.cmd') ">"$(MSBuildProjectDirectory)/.bin/tsd.cmd"</Tsd>
+    <Tsd Condition=" '$(Tsd)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/tsd') ">"$(MSBuildProjectDirectory)/node_modules/.bin/tsd.cmd"</Tsd>
   </PropertyGroup>
 </Target>
 
@@ -88,12 +88,12 @@
 </Exec>
   <PropertyGroup>
     <Gulp Condition="$(GulpErrorCode) == 0">gulp</Gulp>
-    <Gulp Condition=" '$(Gulp)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/gulp.cmd') ">$(MSBuildProjectDirectory)/.bin/gulp</Gulp>
-    <Gulp Condition=" '$(Gulp)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/gulp') ">$(MSBuildProjectDirectory)/node_modules/.bin/gulp.cmd</Gulp>
+    <Gulp Condition=" '$(Gulp)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/gulp.cmd') ">"$(MSBuildProjectDirectory)/.bin/gulp"</Gulp>
+    <Gulp Condition=" '$(Gulp)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/gulp') ">"$(MSBuildProjectDirectory)/node_modules/.bin/gulp.cmd"</Gulp>
 
     <Grunt Condition="$(GruntErrorCode) == 0">grunt</Grunt>
-    <Grunt Condition=" '$(Grunt)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/grunt.cmd') ">$(MSBuildProjectDirectory)/.bin/grunt.cmd</Grunt>
-    <Grunt Condition=" '$(Grunt)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/grunt') ">$(MSBuildProjectDirectory)/node_modules/.bin/grunt.cmd</Grunt>
+    <Grunt Condition=" '$(Grunt)'=='' And Exists('$(MSBuildProjectDirectory)/.bin/grunt.cmd') ">"$(MSBuildProjectDirectory)/.bin/grunt.cmd"</Grunt>
+    <Grunt Condition=" '$(Grunt)'=='' And Exists('$(MSBuildProjectDirectory)/node_modules/.bin/grunt') ">"$(MSBuildProjectDirectory)/node_modules/.bin/grunt.cmd"</Grunt>
   </PropertyGroup>
 </Target>
 
@@ -108,7 +108,7 @@
 
     <Delete Files="@(_filesToDelete)" />
     <RemoveDir Directories="$(MSBuildProjectDirectory)/bower_components/;$(MSBuildProjectDirectory)/typings/"/>
-    <Exec Command="$(MSBuildProjectDirectory)/DelFolder.bat $(MSBuildProjectDirectory)/node_modules" />
+    <Exec Command="&quot;$(MSBuildProjectDirectory)/DelFolder.bat&quot; $(MSBuildProjectDirectory)/node_modules" />
   </Target>
 
 
