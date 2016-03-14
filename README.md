@@ -1,6 +1,8 @@
 NodeJsMsBuild
 =============
 
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 ![Alt text](https://rawgit.com/XVincentX/NodeJsMsBuild/master/NodeJsMsBuild.png)
 
 # MsBuild tasks for NodeJS tools
